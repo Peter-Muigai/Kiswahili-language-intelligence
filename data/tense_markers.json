@@ -1,8 +1,57 @@
 {
-  "tense_markers": {
-    "past": {"name": "Past", "example": "alikula"},
-    "present_progressive": {"name": "Present Progressive", "example": "anakula"},
-    "future": {"name": "Future", "example": "atakula"},
-    "habitual": {"name": "Habitual", "example": "hula"}
+  "present_progressive": {
+    "marker": "-na-",
+    "name": "wakati uliopo unaoendelea",
+    "example": "ninasoma"
+  },
+  "simple_present": {
+    "marker": "-a-",
+    "name": "wakati uliopo sahili",
+    "example": "nasoma"
+  },
+  "past": {
+    "marker": "-li-",
+    "name": "wakati uliopita",
+    "example": "nilisoma"
+  },
+  "future": {
+    "marker": "-ta-",
+    "name": "wakati ujao",
+    "example": "nitasoma"
+  },
+  "perfect": {
+    "marker": "-me-",
+    "name": "tensi timilifu",
+    "example": "nimesoma"
+  },
+  "negative_present": {
+    "marker": null,
+    "prefix": "ha-",
+    "suffix": "-i",
+    "name": "wakati uliopo kanusho",
+    "example": "sisomi"
+  },
+  "negative_past": {
+    "marker": "-ku-",
+    "prefix": "ha-",
+    "name": "wakati uliopita kanusho",
+    "example": "sikusoma"
+  },
+  "negative_future": {
+    "marker": "-ta-",
+    "prefix": "ha-",
+    "name": "wakati ujao kanusho",
+    "example": "sitasoma"
+  },
+  "negative_perfect": {
+    "marker": "-ja-",
+    "prefix": "ha-",
+    "name": "tensi timilifu kanusho",
+    "example": "sijasoma"
+  },
+  "habitual": {
+    "marker": "hu-",
+    "name": "wakati uliopo wa kawaida",
+    "example": "husoma"
   }
 }

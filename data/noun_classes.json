@@ -1,8 +1,100 @@
 {
   "classes": {
-    "1": {"singular_prefix": "m-", "plural_class": "2", "description": "Human beings"},
-    "2": {"singular_prefix": "wa-", "plural_class": "1", "description": "Plural of Class 1"},
-    "7": {"singular_prefix": "ki-", "plural_class": "8", "description": "Things"},
-    "8": {"singular_prefix": "vi-", "plural_class": "7", "description": "Plural of Class 7"}
+    "1": {
+      "singular_prefix": "m-",
+      "plural_class": "2",
+      "description": "People (singular)",
+      "examples": ["mtu", "mwalimu", "mtoto"]
+    },
+    "2": {
+      "singular_prefix": "wa-",
+      "plural_class": "1",
+      "description": "People (plural)",
+      "examples": ["watu", "walimu", "watoto"]
+    },
+    "3": {
+      "singular_prefix": "m-",
+      "plural_class": "4",
+      "description": "Plants, trees, natural phenomena",
+      "examples": ["mti", "mto", "mwezi"]
+    },
+    "4": {
+      "singular_prefix": "mi-",
+      "plural_class": "3",
+      "description": "Plants, trees (plural)",
+      "examples": ["miti", "mito", "miezi"]
+    },
+    "5": {
+      "singular_prefix": "ji-/",
+      "plural_class": "6",
+      "description": "Objects, body parts, augmentatives",
+      "examples": ["jicho", "jengo", "tunda"]
+    },
+    "6": {
+      "singular_prefix": "ma-",
+      "plural_class": "5",
+      "description": "Objects, body parts (plural)",
+      "examples": ["macho", "majengo", "matunda"]
+    },
+    "7": {
+      "singular_prefix": "ki-",
+      "plural_class": "8",
+      "description": "Things, languages, diminutives",
+      "examples": ["kitabu", "kisu", "Kiswahili"]
+    },
+    "8": {
+      "singular_prefix": "vi-",
+      "plural_class": "7",
+      "description": "Things (plural)",
+      "examples": ["vitabu", "visu", "vyakula"]
+    },
+    "9": {
+      "singular_prefix": "/n-",
+      "plural_class": "10",
+      "description": "Animals, foreign words, objects",
+      "examples": ["ndizi", "simba", "kompyuta"]
+    },
+    "10": {
+      "singular_prefix": "∅/n-",
+      "plural_class": "9",
+      "description": "Animals, foreign words (plural)",
+      "examples": ["ndizi", "simba", "kompyuta"]
+    },
+    "11": {
+      "singular_prefix": "u-",
+      "plural_class": "10",
+      "description": "Long, thin objects",
+      "examples": ["ukuta", "ulimi", "udevu"]
+    },
+    "14": {
+      "singular_prefix": "u-",
+      "plural_class": null,
+      "description": "Abstract concepts (no plural)",
+      "examples": ["uhuru", "umoja", "uzima"]
+    },
+    "15": {
+      "singular_prefix": "ku-",
+      "plural_class": null,
+      "description": "Verbal nouns/infinitives",
+      "examples": ["kusoma", "kula", "kuenda"]
+    },
+    "16": {
+      "singular_prefix": "pa-",
+      "plural_class": null,
+      "description": "Specific location",
+      "examples": ["mahali", "nyumbani", "shuleni"]
+    },
+    "17": {
+      "singular_prefix": "ku-",
+      "plural_class": null,
+      "description": "General location",
+      "examples": ["mahali", "mjini", "nchini"]
+    },
+    "18": {
+      "singular_prefix": "m-",
+      "plural_class": null,
+      "description": "Inside location",
+      "examples": ["mfukoni", "ndani", "mtoni"]
+    }
   }
 }

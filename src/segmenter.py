@@ -23,6 +23,14 @@ class MorphemeSegmenter:
         ]
         self.negative_prefixes = ['si', 'ha']
 
+    def _get_plural_class(self, singular_class: str) -> str:
+        """Helper to map singular noun class to its plural counterpart."""
+        class_pairs = {
+            '1': '2', '2':'1', '3': '4', '4': '3',
+            '5': '6', '6': '5', '7': '8', '8': '7',
+            '9': '10', '10': '9', '11': '10'
+        }
+        return class_pairs.get(singular_class, singular_class)
     def segment_verb(self, verb: str) -> Dict[str, str]:
         result = {
             'original': verb, 'negative': False, 'subject_marker': None,
@@ -49,7 +57,6 @@ class MorphemeSegmenter:
                 break
 
         # FIX: Check for object marker ONLY if the remaining part is not a known verb form
-        # This prevents 'kula' from being parsed as object 'ku' + root 'la'
         is_known_verb_form = remaining in self.verbs or remaining in self.valid_roots
 
         if result['subject_marker'] and result['tense_marker'] and not is_known_verb_form:
@@ -103,6 +110,11 @@ class MorphemeSegmenter:
             plural_prefix = noun_data.get('plural_prefix', '')
             clean_plural_prefix = plural_prefix.split('/')[0].rstrip('-') if plural_prefix else ''
             stem = word_lower[len(clean_plural_prefix):] if clean_plural_prefix else word_lower
+
+            # Calculate the actual plural class
+            singular_class = noun_data['class']
+            plural_class = self._get_plural_class(singular_class)
+
             return {
                 'type': 'noun', 'original': word,
                 'prefix': clean_plural_prefix + '-' if clean_plural_prefix else '',
