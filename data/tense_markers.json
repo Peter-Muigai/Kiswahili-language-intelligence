@@ -1,0 +1,8 @@
+{
+  "tense_markers": {
+    "past": {"name": "Past", "example": "alikula"},
+    "present_progressive": {"name": "Present Progressive", "example": "anakula"},
+    "future": {"name": "Future", "example": "atakula"},
+    "habitual": {"name": "Habitual", "example": "hula"}
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "classes": {
+    "1": {"singular_prefix": "m-", "plural_class": "2", "description": "Human beings"},
+    "2": {"singular_prefix": "wa-", "plural_class": "1", "description": "Plural of Class 1"},
+    "7": {"singular_prefix": "ki-", "plural_class": "8", "description": "Things"},
+    "8": {"singular_prefix": "vi-", "plural_class": "7", "description": "Plural of Class 7"}
+  }
+}

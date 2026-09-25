@@ -1,0 +1,18 @@
+# Virtual Environment (Contains thousands of Python package files you don't need to upload)
+.venv/
+venv/
+ENV/
+
+# Python compiled bytecode and cache folders
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE settings (VS Code workspace configurations)
+.vscode/
+.idea/
+
+# Operating system junk files
+Thumbs.db
+Desktop.ini

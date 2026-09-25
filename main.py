@@ -1,73 +1,84 @@
-from src.morphology import KiswahiliMorphologyEngine
 import json
+from pathlib import Path
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from src.morphology import KiswahiliMorphologyEngine
 
-def main():
-    """Main function to demonstrate the morphology engine"""
+app = FastAPI(
+    title="Kiswahili Language Intelligence API",
+    description="Backend API integrating Peter's engine and Larry's sentence morphological dataset.",
+    version="2.1.0"
+)
 
-    # Initialize the engine
+# Enable CORS so Cepha's Streamlit frontend can easily communicate with this backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Initialize the morphology engine
+try:
     engine = KiswahiliMorphologyEngine()
+    engine_loaded = True
+except Exception as e:
+    print(f"⚠️ Engine initialization error: {e}")
+    engine_loaded = False
 
-    print("=" * 60)
-    print("KISWAHILI MORPHOLOGY ENGINE")
-    print("=" * 60)
+# Helper to load Larry's 1,500+ sentence dataset if present
+def load_sentence_dataset():
+    data_path = Path(__file__).parent / "data" / "sentences_data.json"
+    if not data_path.exists():
+        return []
+    try:
+        with open(data_path, "r", encoding="utf-8") as f:
+            content = json.load(f)
+            return content.get("sentences", [])
+    except Exception:
+        return []
 
-    # Example 1: Analyze a verb
-    print("\n1. VERB ANALYSIS")
-    print("-" * 40)
-    verb = "anampenda"
-    print(f"Analyzing: {verb}")
-    analysis = engine.analyze_word(verb)
-    print(json.dumps(analysis, indent=2, ensure_ascii=False))
+class WordRequest(BaseModel):
+    word: str
 
-    # Example 2: Analyze a sentence
-    print("\n2. SENTENCE ANALYSIS")
-    print("-" * 40)
-    sentence = "Ninapenda kusoma kitabu"
-    print(f"Analyzing: {sentence}")
-    analyses = engine.analyze_sentence(sentence)
-    for i, analysis in enumerate(analyses, 1):
-        print(f"\nWord {i}: {analysis['word']}")
-        print(f"  Type: {analysis.get('type', 'unknown')}")
-        if analysis.get('tense'):
-            print(f"  Tense: {analysis['tense']}")
-        if analysis.get('noun_class'):
-            print(f"  Noun Class: {analysis['noun_class']}")
+class SentenceRequest(BaseModel):
+    sentence: str
 
-    # Example 3: Extract roots
-    print("\n3. ROOT EXTRACTION")
-    print("-" * 40)
-    words = ["wanasoma", "tulikula", "wataenda", "vitabu", "watoto"]
-    for word in words:
-        root = engine.extract_root(word)
-        print(f"{word} → {root}")
+@app.get("/", tags=["Health"])
+def read_root():
+    dataset = load_sentence_dataset()
+    return {
+        "status": "online",
+        "engine_loaded": engine_loaded,
+        "dataset_records": len(dataset),
+        "docs_url": "/docs"
+    }
 
-    # Example 4: Detect prefixes and suffixes
-    print("\n4. PREFIX/SUFFIX DETECTION")
-    print("-" * 40)
-    word = "hawatasoma"
-    prefixes = engine.detect_prefixes_suffixes(word)
-    print(f"{word}:")
-    print(f"  Prefixes: {', '.join(prefixes['prefixes'])}")
-    print(f"  Suffixes: {', '.join(prefixes['suffixes'])}")
+@app.post("/api/v1/analyze/word", tags=["Analysis"])
+def analyze_single_word(request: WordRequest):
+    if not engine_loaded:
+        raise HTTPException(status_code=503, detail="Morphology Engine is not initialized.")
+    try:
+        result = engine.analyze_word(request.word)
+        return {"success": True, "input": request.word, "analysis": result}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-    # Example 5: Noun class analysis
-    print("\n5. NOUN CLASS ANALYSIS")
-    print("-" * 40)
-    nouns = ["kitabu", "mtu", "nyumba", "gari"]
-    for noun in nouns:
-        analysis = engine.analyze_word(noun)
-        if analysis.get('noun_class'):
-            nc = analysis['noun_class']
-            print(f"{noun}:")
-            print(f"  Class: {nc.get('class')}")
-            print(f"  Prefix: {nc.get('prefix')}")
-            print(f"  Stem: {nc.get('stem')}")
-            print(f"  Plural: {nc.get('plural_form')}")
+@app.post("/api/v1/analyze/sentence", tags=["Analysis"])
+def analyze_full_sentence(request: SentenceRequest):
+    if not engine_loaded:
+        raise HTTPException(status_code=503, detail="Morphology Engine is not initialized.")
+    try:
+        results = engine.analyze_sentence(request.sentence)
+        return {"success": True, "input": request.sentence, "analysis": results}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-    print("\n" + "=" * 60)
-    print("Analysis complete!")
-    print("=" * 60)
-
-
-if __name__ == "__main__":
-    main()
+@app.get("/api/v1/dataset/search", tags=["Dataset"])
+def search_dataset(query: str):
+    """Search through Larry's pre-analyzed sentence dataset."""
+    sentences = load_sentence_dataset()
+    matches = [s for s in sentences if query.lower() in s.get("sentence", "").lower()]
+    return {"success": True, "query": query, "matches_found": len(matches), "results": matches[:10]}
